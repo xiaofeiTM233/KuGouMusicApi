@@ -350,47 +350,48 @@ $ set HOST=127.0.0.1 && npm run dev
 
 23-06-22: 密码登录、验证码登录、扫码登录
 
+
 ### 登录
 
-说明：登录有五个接口使用 `encodeURIComponent`对密码编码或者使用 `POST`请求，避免某些特殊字符无法解析,如#(#在 url 中会被识别为 hash,而不是 query)
+说明：登录有五个接口使用 `encodeURIComponent`对密码编码或者使用 `POST`请求，避免某些特殊字符无法解析，如#（#在 url 中会被识别为 hash，而不是 query）
 
-不要频繁调登录接口,不然可能会被风控,登录状态还存在就不要重复调登录接口, **不同版本的 token 是不通用的**
+不要频繁调登录接口，不然可能会被风控，登录状态还存在就不要重复调登录接口， **不同版本的 token 是不通用的**
 
 #### 1.手机登录
 
 **必选参数：**
 
-`mobile`: 手机号码
+`mobile`：手机号码
 
-`code`: 验证码，使用 [`/captcha/sent`](#发送验证码)接口传入手机号获取验证码,调用此接口传入验证码,可使用验证码登录
+`code`：验证码，使用 [`/captcha/sent`](#发送验证码)接口传入手机号获取验证码，调用此接口传入验证码，可使用验证码登录
 
 **可选参数**
 
-`userid`: 用户 id,当用户存在多个账户是时，必须加上需要登录的用户 id
+`userid`：用户 id，当用户存在多个账户是时，必须加上需要登录的用户 id
 
 **接口地址：** `/login/cellphone`
 
 **调用例子：** `/login/cellphone?mobile=xxx&code=xxx`
 
-#### 2. 用户名登录(该登录可能需要验证，不推荐使用)
+#### 2. 用户名登录（该登录可能需要验证，不推荐使用）
 
 **必选参数：**
 
-`username`: 用户名
+`username`：用户名
 
-`password`: 密码
+`password`：密码
 
 **接口地址：** `/login`
 
 **调用例子：** `/login?username=xxx&password=yyy`
 
-#### 3. 开放接口登录(目前仅支持微信登录)
+#### 3. 开放接口登录（目前仅支持微信登录）
 
-说明: 该接口为第三方平台登录，目前仅支持微信登录
+说明：该接口为第三方平台登录，目前仅支持微信登录
 
 **必选参数：**
 
-`code`: 由微信扫码成功后生成
+`code`：由微信扫码成功后生成
 
 **接口地址：** `/login/openplat`
 
@@ -398,26 +399,26 @@ $ set HOST=127.0.0.1 && npm run dev
 
 #### 4. 二维码登录
 
-说明: 二维码登录涉及到 3 个接口,调用务必带上时间戳,防止缓存
+说明：二维码登录涉及到 3 个接口，调用务必带上时间戳，防止缓存
 
 ##### 1.二维码 key 生成接口
 
-说明: 调用此接口可生成一个 key
+说明：调用此接口可生成一个 key
 
 **接口地址：** `/login/qr/key`
 
 ##### 2.二维码生成接口
 
-说明: 调用此接口传入上一个接口生成的 key 可生成二维码图片的 base64 和二维码信息,可使用 base64 展示图片,或者使用二维码信息内容自行使用第三方二维码生成
+说明：调用此接口传入上一个接口生成的 key 可生成二维码图片的 base64 和二维码信息，可使用 base64 展示图片，或者使用二维码信息内容自行使用第三方二维码生成
 库渲染二维码
 
 **必选参数：**
 
-`key`: ,由第一个接口生成
+`key`：由第一个接口生成
 
 **可选参数：**
 
-`qrimg`: 传入后会额外返回二维码图片 base64 编码
+`qrimg`：传入后会额外返回二维码图片 base64 编码
 
 **接口地址：** `/login/qr/create`
 
@@ -425,11 +426,11 @@ $ set HOST=127.0.0.1 && npm run dev
 
 ##### 2.二维码检测扫码状态接口
 
-说明: 轮询此接口可获取二维码扫码状态,0 为二维码过期，1 为等待扫码，2 为待确认，4 为授权登录成功（4 状态码下会返回 token）
+说明：轮询此接口可获取二维码扫码状态，0 为二维码过期，1 为等待扫码，2 为待确认，4 为授权登录成功（4 状态码下会返回 token）
 
 **必选参数：**
 
-`key`: ,由第一个接口生成
+`key`：由第一个接口生成
 
 **接口地址：** `/login/qr/check`
 
@@ -437,11 +438,11 @@ $ set HOST=127.0.0.1 && npm run dev
 
 #### 5. 微信登录
 
-说明：微信登录涉及到 2 个接口,调用务必带上时间戳,防止缓存
+说明：微信登录涉及到 2 个接口，调用务必带上时间戳，防止缓存
 
 ##### 1. 二维码生成接口
 
-说明：调用此接口可生成微信的 uuid, 包括二维码 Bae64 和 二维码扫描链接, 注: 该接口请求的接口过多, 会出现返回较慢的情况
+说明：调用此接口可生成微信的 uuid，包括二维码 Bae64 和 二维码扫描链接，注：该接口请求的接口过多，会出现返回较慢的情况
 
 **接口地址：** `/login/wx/create`
 
@@ -449,17 +450,17 @@ $ set HOST=127.0.0.1 && npm run dev
 
 ##### 2.二维码检测扫码状态接口
 
-说明：轮询此接口可获取二维码扫码状态, 408 为等待扫描，404 为已经扫描，403 为拒绝登录，405 为登录成功，402 为已过期(405 状态下登陆完成口会返回 wx_code,
-用于开放登陆 [`/login/openplat`](#_3-开放接口登录目前仅支持微信登录)), 注：该接口有一定延时，不可访问是可以直接到
+说明：轮询此接口可获取二维码扫码状态，408 为等待扫描，404 为已经扫描，403 为拒绝登录，405 为登录成功，402 为已过期（405 状态下登陆完成口会返回 wx_code，
+用于开放登陆 [`/login/openplat`](#_3-开放接口登录目前仅支持微信登录)），注：该接口有一定延时，不可访问是可以直接到
 https://long.open.weixin.qq.com/connect/l/qrconnect?f=json&uuid=xxx 该接口直接请求
 
 **必选参数：**
 
-`uuid`: 由第一个接口生成
+`uuid`：由第一个接口生成
 
 **可选参数：**
 
-`timestamp`: 建议传递，否则由于缓存会导致延迟
+`timestamp`：建议传递，否则由于缓存会导致延迟
 
 **接口地址：** `/login/wx/check`
 
@@ -467,13 +468,13 @@ https://long.open.weixin.qq.com/connect/l/qrconnect?f=json&uuid=xxx 该接口直
 
 ### 刷新登录
 
-说明 : 调用此接口，可刷新登录状态，可以延长 `token` 过期时间
+说明：调用此接口，可刷新登录状态，可以延长 `token` 过期时间
 
 **可选参数：**
 
-`token`: 登录后获取的 token
+`token`：登录后获取的 token
 
-`userid`: 用户 id
+`userid`：用户 id
 
 **接口地址：** `/login/token`
 
@@ -481,11 +482,11 @@ https://long.open.weixin.qq.com/connect/l/qrconnect?f=json&uuid=xxx 该接口直
 
 ### 发送验证码
 
-说明: 调用此接口 ,传入手机号码, 可发送验证码
+说明：调用此接口，传入手机号码，可发送验证码
 
 **必选参数：**
 
-`mobile`: 手机号码
+`mobile`：手机号码
 
 **接口地址：** `/captcha/sent`
 
@@ -517,7 +518,7 @@ https://long.open.weixin.qq.com/connect/l/qrconnect?f=json&uuid=xxx 该接口直
 
 `page`：页数
 
-`pagesize `: 每页页数, 默认为 30
+`pagesize`：每页页数，默认为 30
 
 **接口地址：** `/user/playlist`
 
@@ -537,9 +538,9 @@ https://long.open.weixin.qq.com/connect/l/qrconnect?f=json&uuid=xxx 该接口直
 
 **可选参数**
 
-`page `: 页数
+`page`：页数
 
-`pagesize `: 每页页数, 默认为 30
+`pagesize`：每页页数，默认为 30
 
 **接口地址：** `/user/cloud`
 
@@ -551,13 +552,13 @@ https://long.open.weixin.qq.com/connect/l/qrconnect?f=json&uuid=xxx 该接口直
 
 **必选参数：**
 
-`hash`: 音乐 hash
+`hash`：音乐 hash
 
 **可选参数：**
 
-`album_id`: 专辑 id
+`album_id`：专辑 id
 
-`name`: 云盘音乐名称
+`name`：云盘音乐名称
 
 `album_audio_id`：专辑音频 id
 
@@ -571,9 +572,9 @@ https://long.open.weixin.qq.com/connect/l/qrconnect?f=json&uuid=xxx 该接口直
 
 **可选参数**
 
-`page `: 页数
+`page`：页数
 
-`pagesize `: 每页页数, 默认为 30
+`pagesize`：每页页数，默认为 30
 
 **接口地址：** `/user/video/collect`
 
@@ -585,7 +586,7 @@ https://long.open.weixin.qq.com/connect/l/qrconnect?f=json&uuid=xxx 该接口直
 
 **可选参数**
 
-`pagesize `: 每页页数, 默认为 30
+`pagesize`：每页页数，默认为 30
 
 **接口地址：** `/user/video/love`
 
@@ -605,11 +606,11 @@ https://long.open.weixin.qq.com/connect/l/qrconnect?f=json&uuid=xxx 该接口直
 
 ### 获取用户最近听歌历史
 
-说明：登录后调用此接口，可以近期的听歌历史记录(需要登陆)
+说明：登录后调用此接口，可以近期的听歌历史记录（需要登陆）
 
 **可选参数：**
 
-`bp`: 可以更加上一次返回值传入
+`bp`：可以更加上一次返回值传入
 
 **接口地址：** `/user/history`
 
@@ -617,11 +618,11 @@ https://long.open.weixin.qq.com/connect/l/qrconnect?f=json&uuid=xxx 该接口直
 
 ### 获取继续播放信息（对应手机版首页显示继续播放入口）
 
-说明：登录后调用此接口，可以最后设备播放信息(需要登陆)
+说明：登录后调用此接口，可以最后设备播放信息（需要登陆）
 
 **可选参数：**
 
-`pagesize`: 每页页数, 默认为 30
+`pagesize`：每页页数，默认为 30
 
 **接口地址：** `/lastest/songs/listen`
 
@@ -629,21 +630,21 @@ https://long.open.weixin.qq.com/connect/l/qrconnect?f=json&uuid=xxx 该接口直
 
 ### 收藏歌单/新建歌单
 
-说明 : 调用此接口, 可收藏歌单/新建歌单( 需要登录 ), 收藏成功后建议使用 [`/playlist/tracks/add`](#对歌单添加歌曲) 把原歌单下的歌曲添加到新的歌单
+说明：调用此接口，可收藏歌单/新建歌单（需要登录），收藏成功后建议使用 [`/playlist/tracks/add`](#对歌单添加歌曲) 把原歌单下的歌曲添加到新的歌单
 
 **必选参数：**
 
-name: 歌单名称
+name：歌单名称
 
-list_create_userid: 歌单 list_create_userid
+list_create_userid：歌单 list_create_userid
 
-list_create_listid: 歌单 list_create_listid
+list_create_listid：歌单 list_create_listid
 
 **可选参数**
 
-`is_pri`: 是否设为隐私，0：公开，1：隐私，仅支持创建歌单时传入
+`is_pri`：是否设为隐私，0：公开，1：隐私，仅支持创建歌单时传入
 
-`type`: 1：为收藏歌单，0：创建歌单, 默认为 0
+`type`：1：为收藏歌单，0：创建歌单，默认为 0
 
 `list_create_gid`：歌单 list_create_gid
 
@@ -653,11 +654,11 @@ list_create_listid: 歌单 list_create_listid
 
 ### 取消收藏歌单/删除歌单
 
-说明 : 调用此接口 , 取消收藏歌单( 需要登录 )
+说明：调用此接口，取消收藏歌单（需要登录）
 
 **必选参数：**
 
-listid: 用户歌单 listid
+listid：用户歌单 listid
 
 **接口地址：** `/playlist/del`
 
@@ -665,13 +666,13 @@ listid: 用户歌单 listid
 
 ### 对歌单添加歌曲
 
-说明 : 调用此接口 , 可以添加歌曲到歌单 ( 需要登录 )
+说明：调用此接口，可以添加歌曲到歌单（需要登录）
 
 **必选参数：**
 
-listid: 用户歌单 listid
+listid：用户歌单 listid
 
-data: 歌曲数据, 格式为 歌曲名称|歌曲 hash|专辑 id|(mixsongid/album_audio_id)，最少需要 歌曲名称以及歌曲 hash(若返回错误则需要全部参数)， 支持多个，每
+data：歌曲数据，格式为 歌曲名称|歌曲 hash|专辑 id|(mixsongid/album_audio_id)，最少需要 歌曲名称以及歌曲 hash（若返回错误则需要全部参数），支持多个，每
 个以逗号分隔
 
 **接口地址：** `/playlist/tracks/add`
@@ -682,13 +683,13 @@ data: 歌曲数据, 格式为 歌曲名称|歌曲 hash|专辑 id|(mixsongid/albu
 
 ### 对歌单删除歌曲
 
-说明 : 调用此接口 , 可以删除歌单某首歌曲 ( 需要登录 )
+说明：调用此接口，可以删除歌单某首歌曲（需要登录）
 
 **必选参数：**
 
-listid: 用户歌单 listid
+listid：用户歌单 listid
 
-fileids: 歌单中歌曲的 fileid，可多个,用逗号隔开
+fileids：歌单中歌曲的 fileid，可多个，用逗号隔开
 
 **接口地址：** `/playlist/tracks/del`
 
@@ -696,16 +697,16 @@ fileids: 歌单中歌曲的 fileid，可多个,用逗号隔开
 
 ### 新碟上架
 
-说明: 调用此接口 , 可获取新碟上架列表, 如需要专辑详细信息需要调用[`album/detail`](#专辑详情), 如需要获取专辑音乐列表需调
+说明：调用此接口，可获取新碟上架列表，如需要专辑详细信息需要调用[`album/detail`](#专辑详情)，如需要获取专辑音乐列表需调
 用[`album/songs`](#专辑音乐列表)
 
 **可选参数：**
 
-`type `: 1：华语；2：欧美；3：日本；4：韩国；推荐为空，默认为空
+`type`：1：华语；2：欧美；3：日本；4：韩国；推荐为空，默认为空
 
-`page `: 页数
+`page`：页数
 
-`pagesize `: 每页页数, 默认为 30
+`pagesize`：每页页数，默认为 30
 
 **接口地址：** `/top/album`
 
@@ -713,15 +714,15 @@ fileids: 歌单中歌曲的 fileid，可多个,用逗号隔开
 
 ### 专辑信息
 
-说明: 调用此接口 ,传入专辑 id 可获取专辑相关信息
+说明：调用此接口，传入专辑 id 可获取专辑相关信息
 
 **必选参数：**
 
-`album_id`: 专辑 id,可以传多个，以逗号分割
+`album_id`：专辑 id，可以传多个，以逗号分割
 
 **可选参数：**
 
-`fields`: 需要返回的信息，可以传多个，以逗号分割，支持的值有 `trans_param` `special_tag` `authors` `album_name` `publish_date` `cover` `intro`
+`fields`：需要返回的信息，可以传多个，以逗号分割，支持的值有 `trans_param` `special_tag` `authors` `album_name` `publish_date` `cover` `intro`
 `publish_company` `type` `album_id` `language_id` `is_publish` `heat` `grade` `quality` `exclusive` `grade_count` `author_name` `sizable_cover`
 `language` `category`
 
@@ -731,11 +732,11 @@ fileids: 歌单中歌曲的 fileid，可多个,用逗号隔开
 
 ### 专辑详情
 
-说明: 调用此接口 ,传入专辑 id 可获取专辑详情
+说明：调用此接口，传入专辑 id 可获取专辑详情
 
 **必选参数：**
 
-`id`: 专辑 id
+`id`：专辑 id
 
 **接口地址：** `/album/detail`
 
@@ -743,17 +744,17 @@ fileids: 歌单中歌曲的 fileid，可多个,用逗号隔开
 
 ### 专辑音乐列表
 
-说明: 调用此接口 ,传入专辑 id 可获取专辑音乐列表
+说明：调用此接口，传入专辑 id 可获取专辑音乐列表
 
 **必选参数：**
 
-`id`: 专辑 id
+`id`：专辑 id
 
 **可选参数：**
 
-`page `: 页数
+`page`：页数
 
-`pagesize `: 每页页数, 默认为 30
+`pagesize`：每页页数，默认为 30
 
 **接口地址：** `/album/songs`
 
@@ -761,17 +762,17 @@ fileids: 歌单中歌曲的 fileid，可多个,用逗号隔开
 
 ### 获取音乐 URL
 
-说明: 调用此接口, 传入的音乐 hash, 可以获取对应的音乐的 url, 未登录状态或者非会员可能会返回为空。
+说明：调用此接口，传入的音乐 hash，可以获取对应的音乐的 url，未登录状态或者非会员可能会返回为空。
 
 **必选参数：**
 
-`hash`: 音乐 hash
+`hash`：音乐 hash
 
 **可选参数：**
 
-`album_id`: 专辑 id
+`album_id`：专辑 id
 
-`free_part`: 是否返回试听部分（仅部分歌曲）
+`free_part`：是否返回试听部分（仅部分歌曲）
 
 `album_audio_id`：专辑音频 id
 
@@ -803,7 +804,7 @@ fileids: 歌单中歌曲的 fileid，可多个,用逗号隔开
 
 `viper_clear`：蝰蛇超清音质
 
-`viper_tape`：蝰蛇母带，仅部分音乐支持, 该音质需要转码，关于转码相关的技术还不会
+`viper_tape`：蝰蛇母带，仅部分音乐支持，该音质需要转码，关于转码相关的技术还不会
 
 **接口地址：** `/song/url`
 
@@ -811,18 +812,18 @@ fileids: 歌单中歌曲的 fileid，可多个,用逗号隔开
 
 ### 获取音乐 URL（新版）
 
-说明: 调用此接口, 传入的音乐 hash, 可以获取对应的音乐的 url, 未登录状态或者非会员可能会返回为空，该接口会一次性返回支持的音质的音频 url, **但该接口存
+说明：调用此接口，传入的音乐 hash，可以获取对应的音乐的 url，未登录状态或者非会员可能会返回为空，该接口会一次性返回支持的音质的音频 url，**但该接口存
 在音频加密（目前无法解码），请谨慎使用**
 
 **必选参数：**
 
-`hash`: 音乐 hash
+`hash`：音乐 hash
 
 **可选参数：**
 
 `album_audio_id`：专辑音频 id
 
-`free_part`: 是否返回试听部分（仅部分歌曲）
+`free_part`：是否返回试听部分（仅部分歌曲）
 
 `album_audio_id`：专辑音频 id
 
@@ -832,11 +833,11 @@ fileids: 歌单中歌曲的 fileid，可多个,用逗号隔开
 
 ### 获取歌曲高潮部分
 
-说明: 调用此接口, 传入的音乐 hash, 可以获取对应的音乐的高潮时间
+说明：调用此接口，传入的音乐 hash，可以获取对应的音乐的高潮时间
 
 **必选参数：**
 
-`hash`: 音乐 hash, 可以传多个，以逗号分割
+`hash`：音乐 hash，可以传多个，以逗号分割
 
 **接口地址：** `/song/climax`
 
@@ -844,19 +845,19 @@ fileids: 歌单中歌曲的 fileid，可多个,用逗号隔开
 
 ### 搜索
 
-说明: 调用此接口 , 传入搜索关键词可以搜索该音乐 / mv / 歌单 / 歌词 / 专辑 / 歌手
+说明：调用此接口，传入搜索关键词可以搜索该音乐 / mv / 歌单 / 歌词 / 专辑 / 歌手
 
 **必选参数：**
 
-`keywords`: 关键词
+`keywords`：关键词
 
 **可选参数：**
 
-`page `: 页数
+`page`：页数
 
-`pagesize `: 每页页数, 默认为 30
+`pagesize`：每页页数，默认为 30
 
-`type`: 搜索类型；默认为单曲，special：歌单，lyric：歌词，song：单曲，album：专辑，author：歌手，mv：mv
+`type`：搜索类型；默认为单曲，special：歌单，lyric：歌词，song：单曲，album：专辑，author：歌手，mv：mv
 
 **接口地址：** `/search`
 
@@ -864,23 +865,23 @@ fileids: 歌单中歌曲的 fileid，可多个,用逗号隔开
 
 ### 默认搜索关键词
 
-说明 : 调用此接口 , 可获取默认搜索关键词
+说明：调用此接口，可获取默认搜索关键词
 
 **接口地址：** `/search/default`
 
 ### 综合搜索
 
-说明: 调用此接口, 传入搜索关键词可以获得综合搜索，搜索结果同时包含单曲 , 歌手 , 歌单等信息
+说明：调用此接口，传入搜索关键词可以获得综合搜索，搜索结果同时包含单曲，歌手，歌单等信息
 
 **必选参数：**
 
-`keywords`: 关键词
+`keywords`：关键词
 
 **可选参数：**
 
-`page `: 页数
+`page`：页数
 
-`pagesize `: 每页页数, 默认为 30
+`pagesize`：每页页数，默认为 30
 
 **接口地址：** `/search/complex`
 
@@ -888,7 +889,7 @@ fileids: 歌单中歌曲的 fileid，可多个,用逗号隔开
 
 ### 热搜列表
 
-说明 : 调用此接口,可获取热门搜索列表
+说明：调用此接口，可获取热门搜索列表
 
 **接口地址：** `/search/hot`
 
@@ -896,17 +897,17 @@ fileids: 歌单中歌曲的 fileid，可多个,用逗号隔开
 
 ### 搜索建议
 
-说明 : 调用此接口 , 传入搜索关键词可获得搜索建议 , 搜索结果同时包含单曲 , 歌手 , 歌单信息
+说明：调用此接口，传入搜索关键词可获得搜索建议，搜索结果同时包含单曲，歌手，歌单信息
 
 **可选参数：**
 
-`albumTipCount `: 专辑返回数量
+`albumTipCount`：专辑返回数量
 
-`correctTipCount `: 目前未知，可能是歌单
+`correctTipCount`：目前未知，可能是歌单
 
-`mvTipCount `: MV 返回数量
+`mvTipCount`：MV 返回数量
 
-`musicTipCount `: 音乐返回数量
+`musicTipCount`：音乐返回数量
 
 **接口地址：** `/search/suggest`
 
@@ -914,19 +915,19 @@ fileids: 歌单中歌曲的 fileid，可多个,用逗号隔开
 
 ### 歌词搜索
 
-说明: 调用此接口, 可以搜索歌词，该接口需配合 [`/lyric`](#获取歌词) 使用。
+说明：调用此接口，可以搜索歌词，该接口需配合 [`/lyric`](#获取歌词) 使用。
 
 **必选参数：**
 
-`keywords`: 关键词，与 hash 二选一
+`keywords`：关键词，与 hash 二选一
 
-`hash`: 歌曲 hash，与 keyword 二选一
+`hash`：歌曲 hash，与 keyword 二选一
 
 **可选参数：**
 
-`album_audio_id`: 专辑音乐 id,
+`album_audio_id`：专辑音乐 id,
 
-`man`: 是否返回多个歌词，`yes`：返回多个， `no`：返回一个。 默认为`no`
+`man`：是否返回多个歌词，`yes`：返回多个，`no`：返回一个。默认为`no`
 
 **接口地址：** `/search/lyric`
 
@@ -934,19 +935,19 @@ fileids: 歌单中歌曲的 fileid，可多个,用逗号隔开
 
 ### 获取歌词
 
-说明 : 调用此接口，可以获取歌词，调用该接口前则需要调用[`/search/lyric`](#歌词搜索) 获取完整参数
+说明：调用此接口，可以获取歌词，调用该接口前则需要调用[`/search/lyric`](#歌词搜索) 获取完整参数
 
 **必选参数：**
 
-`id`: 歌词 id, 可以从 [`/search/lyric`](#歌词搜搜) 接口中获取
+`id`：歌词 id，可以从 [`/search/lyric`](#歌词搜搜) 接口中获取
 
-`accesskey`: 歌词 accesskey, 可以从 [`/search/lyric`](#歌词搜搜) 接口中获取
+`accesskey`：歌词 accesskey，可以从 [`/search/lyric`](#歌词搜搜) 接口中获取
 
 **可选参数：**
 
-`fmt`: 歌词类型，lrc 为普通歌词，krc 为逐字歌词
+`fmt`：歌词类型，lrc 为普通歌词，krc 为逐字歌词
 
-`decode`: 是否解码，传入该参数这返回解码后的歌词
+`decode`：是否解码，传入该参数这返回解码后的歌词
 
 **接口地址：** `/lyric`
 
@@ -954,7 +955,7 @@ fileids: 歌单中歌曲的 fileid，可多个,用逗号隔开
 
 ### 歌单分类
 
-说明 : 调用此接口,可获取歌单分类,包含 category 信息
+说明：调用此接口，可获取歌单分类，包含 category 信息
 
 **接口地址：** `/playlist/tags`
 
@@ -962,17 +963,17 @@ fileids: 歌单中歌曲的 fileid，可多个,用逗号隔开
 
 ### 歌单
 
-说明 : 调用此接口 , 可获取歌单
+说明：调用此接口，可获取歌单
 
 **必选参数：**
 
-`category_id`: tag，0：推荐，11292：HI-RES，其他可以从 [`/playlist/tags`](#歌单分类) 接口中获取（接口下的 `tag_id` 为 `category_id`的值）
+`category_id`：tag，0：推荐，11292：HI-RES，其他可以从 [`/playlist/tags`](#歌单分类) 接口中获取（接口下的 `tag_id` 为 `category_id`的值）
 
 **可选参数：**
 
-`withsong`: 是否返回歌曲列表（不全），0：不返回，1：返回
+`withsong`：是否返回歌曲列表（不全），0：不返回，1：返回
 
-`withtag`: 是否返回歌单分类，0：不返回，1：返回
+`withtag`：是否返回歌单分类，0：不返回，1：返回
 
 **接口地址：** `/top/playlist`
 
@@ -980,7 +981,7 @@ fileids: 歌单中歌曲的 fileid，可多个,用逗号隔开
 
 ### 主题歌单
 
-说明 : 调用此接口 , 可获取主题歌单, 通过 [`/theme/playlist/track`](#获取主题歌单所有歌曲) 可以获取主题个单下的歌曲
+说明：调用此接口，可获取主题歌单，通过 [`/theme/playlist/track`](#获取主题歌单所有歌曲) 可以获取主题个单下的歌曲
 
 **接口地址：** `/theme/playlist`
 
@@ -988,13 +989,13 @@ fileids: 歌单中歌曲的 fileid，可多个,用逗号隔开
 
 ### 音效歌单
 
-说明 : 调用此接口 , 可获取音效歌单
+说明：调用此接口，可获取音效歌单
 
 **可选参数：**
 
-`page `: 页数
+`page`：页数
 
-`pagesize `: 每页页数, 默认为 30
+`pagesize`：每页页数，默认为 30
 
 **接口地址：** `/playlist/effect`
 
@@ -1002,11 +1003,11 @@ fileids: 歌单中歌曲的 fileid，可多个,用逗号隔开
 
 ### 获取歌单详情
 
-说明: 调用此接口 , 可获取歌单详细信息
+说明：调用此接口，可获取歌单详细信息
 
 **必选参数：**
 
-`ids`: 歌单中的 `global_collection_id`，可以传多个，用逗号分隔
+`ids`：歌单中的 `global_collection_id`，可以传多个，用逗号分隔
 
 **接口地址：** `/playlist/detail`
 
@@ -1014,17 +1015,17 @@ fileids: 歌单中歌曲的 fileid，可多个,用逗号隔开
 
 ### 获取歌单所有歌曲
 
-说明 : 调用此接口，传入对应的歌单 global_collection_id，即可获得对应的所有歌曲
+说明：调用此接口，传入对应的歌单 global_collection_id，即可获得对应的所有歌曲
 
 **必选参数：**
 
-`id`: 歌单中的 `global_collection_id`
+`id`：歌单中的 `global_collection_id`
 
 **可选参数：**
 
-`page `: 页数
+`page`：页数
 
-`pagesize `: 每页页数, 默认为 30
+`pagesize`：每页页数，默认为 30
 
 **接口地址：** `/playlist/track/all`
 
@@ -1032,17 +1033,17 @@ fileids: 歌单中歌曲的 fileid，可多个,用逗号隔开
 
 ### 获取歌单所有歌曲(新版)
 
-说明 : 调用此接口，传入对应的歌单 listid，即可获得对应的所有歌曲, 目前该接口仅支持 用户所创建及收藏的歌单
+说明：调用此接口，传入对应的歌单 listid，即可获得对应的所有歌曲，目前该接口仅支持 用户所创建及收藏的歌单
 
 **必选参数：**
 
-`lisdid`: 歌单中的 `listid`
+`lisdid`：歌单中的 `listid`
 
 **可选参数：**
 
-`page `: 页数
+`page`：页数
 
-`pagesize `: 每页页数, 默认为 30
+`pagesize`：每页页数，默认为 30
 
 **接口地址：** `/playlist/track/all/new`
 
@@ -1050,7 +1051,7 @@ fileids: 歌单中歌曲的 fileid，可多个,用逗号隔开
 
 ### 相似歌单
 
-说明 : 调用此接口，根据歌单 id 获取相似歌单
+说明：调用此接口，根据歌单 id 获取相似歌单
 
 **必选参数：**
 
@@ -1065,7 +1066,7 @@ fileids: 歌单中歌曲的 fileid，可多个,用逗号隔开
 
 **必选参数：**
 
-`theme_id`: 主题歌单 id
+`theme_id`：主题歌单 id
 
 **接口地址：** `/theme/playlist/track`
 
@@ -1073,7 +1074,7 @@ fileids: 歌单中歌曲的 fileid，可多个,用逗号隔开
 
 ### 获取主题音乐
 
-说明 : 调用此接口，可以获取主题音乐，调用 [`/theme/music/detail`](#) 可以获取主题音乐详情
+说明：调用此接口，可以获取主题音乐，调用 [`/theme/music/detail`](#) 可以获取主题音乐详情
 
 **接口地址：** `/theme/music`
 
@@ -1081,11 +1082,11 @@ fileids: 歌单中歌曲的 fileid，可多个,用逗号隔开
 
 ### 获取主题音乐详情
 
-说明 : 调用此接口，传入对应的主题 id 可以获取主题音乐详情.
+说明：调用此接口，传入对应的主题 id 可以获取主题音乐详情。
 
 **必选参数：**
 
-`id`: 主题音乐 id
+`id`：主题音乐 id
 
 **接口地址：** `/theme/music/detail`
 
@@ -1093,11 +1094,11 @@ fileids: 歌单中歌曲的 fileid，可多个,用逗号隔开
 
 ### 歌曲推荐
 
-说明 : 调用此接口，可以获取歌曲推荐.
+说明：调用此接口，可以获取歌曲推荐。
 
 **必选参数：**
 
-`card_id`: 1：对应安卓 精选好歌随心听 || 私人专属好歌，2：对应安卓 经典怀旧金曲，3：对应安卓 热门好歌精选，4：对应安卓 小众宝藏佳作，5：未知，6：对应
+`card_id`：1：对应安卓 精选好歌随心听 || 私人专属好歌，2：对应安卓 经典怀旧金曲，3：对应安卓 热门好歌精选，4：对应安卓 小众宝藏佳作，5：未知，6：对应
 vip 专属推荐
 
 **接口地址：** `/top/card`
@@ -1106,15 +1107,15 @@ vip 专属推荐
 
 ### 歌曲推荐（概念版）
 
-说明 : 调用此接口，可以获取歌曲推荐
+说明：调用此接口，可以获取歌曲推荐
 
 **必选参数：**
 
-`card_id`: 3006: VIP 专属推荐，3001: 私人专属好歌，3004: 小众宝藏佳作，3014: 喜欢这首歌的 TA 也喜欢，3101: 概念 er 新推，3005: 潮流尝鲜
+`card_id`：3006: VIP 专属推荐，3001: 私人专属好歌，3004: 小众宝藏佳作，3014: 喜欢这首歌的 TA 也喜欢，3101: 概念 er 新推，3005: 潮流尝鲜
 
 **可选参数**
 
-`pagesize`: 每页页数, 默认为 30
+`pagesize`：每页页数，默认为 30
 
 **接口地址：** `/top/card`
 
@@ -1122,19 +1123,19 @@ vip 专属推荐
 
 ### 获取歌手和专辑图片
 
-说明 : 调用此接口，可以获取歌手和专辑图片.
+说明：调用此接口，可以获取歌手和专辑图片。
 
 **必选参数：**
 
-`hash`: 歌曲 hash, 可以传多个，每个以逗号分开
+`hash`：歌曲 hash，可以传多个，每个以逗号分开
 
 **可选参数：**
 
-`album_id`: 专辑 id, 可以传多个，每个以逗号分开
+`album_id`：专辑 id，可以传多个，每个以逗号分开
 
-`album_audio_id`: 专辑音乐 id, 可以传多个，每个以逗号分开
+`album_audio_id`：专辑音乐 id，可以传多个，每个以逗号分开
 
-`count`: 最多返回多少张图片，默认为 5
+`count`：最多返回多少张图片，默认为 5
 
 **接口地址：** `/images`
 
@@ -1143,21 +1144,21 @@ vip 专属推荐
 
 ### 获取歌手图片
 
-说明 : 调用此接口，可以获取歌手图片.
+说明：调用此接口，可以获取歌手图片。
 
 **必选参数：**
 
-`hash`: 歌曲 hash, 可以传多个，每个以逗号分开
+`hash`：歌曲 hash，可以传多个，每个以逗号分开
 
 **可选参数：**
 
-`audio_id`: 音乐 id, 可以传多个，每个以逗号分开
+`audio_id`：音乐 id，可以传多个，每个以逗号分开
 
-`album_audio_id`: 专辑音乐 id, 可以传多个，每个以逗号分开
+`album_audio_id`：专辑音乐 id，可以传多个，每个以逗号分开
 
-`filename`: 音乐文件名称, 可以传多个，每个以逗号分开
+`filename`：音乐文件名称，可以传多个，每个以逗号分开
 
-`count`: 最多返回多少张图片，默认为 5
+`count`：最多返回多少张图片，默认为 5
 
 **接口地址：** `/images/audio`
 
@@ -1170,7 +1171,7 @@ vip 专属推荐
 
 **必选参数：**
 
-`hash`: 歌曲 hash, 可以传多个，每个以逗号分开
+`hash`：歌曲 hash，可以传多个，每个以逗号分开
 
 **接口地址：** `/audio`
 
@@ -1186,15 +1187,15 @@ vip 专属推荐
 
 **可选参数：**
 
-`page`： 页码
+`page`：页码
 
-`pagesize`: 每页页数, 默认为 30
+`pagesize`：每页页数，默认为 30
 
 `show_type`：是否返回分类
 
 `sort`：排序，支持 `all`，`hot`，`new`
 
-`type`: 分类
+`type`：分类
 
 `show_detail`：是否返回详情，否则只返回总数，0：只返回总数，不传或者其他都返回详情
 
@@ -1210,9 +1211,9 @@ vip 专属推荐
 
 `hash`：音乐 hash
 
-`fileName`: 音乐 fileName
+`fileName`：音乐 fileName
 
-`mixid`: 音乐的 mixsongid/album_audio_id
+`mixid`：音乐的 mixsongid/album_audio_id
 
 **接口地址：** `/audio/accompany/matching`
 
@@ -1224,11 +1225,11 @@ vip 专属推荐
 
 **必选参数：**
 
-`songId`：音乐 songid, 该字段需要请求 [获取音乐伴奏信息](#获取音乐伴奏信息) 获取
+`songId`：音乐 songid，该字段需要请求 [获取音乐伴奏信息](#获取音乐伴奏信息) 获取
 
 `singerName`：歌手名称，多个以 `、` 隔开，也可以到 [获取音乐伴奏信息](#获取音乐伴奏信息) 中获取
 
-`songHash`：音乐 hash, 该字段需要请求 [获取音乐伴奏信息](#获取音乐伴奏信息) 获取
+`songHash`：音乐 hash，该字段需要请求 [获取音乐伴奏信息](#获取音乐伴奏信息) 获取
 
 **接口地址：** `/audio/ktv/total`
 
@@ -1240,7 +1241,7 @@ vip 专属推荐
 
 **必选参数：**
 
-`hash`: 歌曲 hash, 可以传多个，每个以逗号分开
+`hash`：歌曲 hash，可以传多个，每个以逗号分开
 
 **接口地址：** `/privilege/lite`
 
@@ -1253,11 +1254,11 @@ vip 专属推荐
 
 **必选参数：**
 
-`album_audio_id`: 专辑音乐 id (album_audio_id/MixSongID 均可以), 可以传多个，每个以逗号分开
+`album_audio_id`：专辑音乐 id (album_audio_id/MixSongID 均可以)，可以传多个，每个以逗号分开
 
 **可选参数**
 
-`fields`: 可以传 `album_info` `authors.base` `base` `audio_info`, `authors.ip`, `extra`, `tags`, `tagmap` 每个 field 以逗号分开
+`fields`：可以传 `album_info` `authors.base` `base` `audio_info`, `authors.ip`, `extra`, `tags`, `tagmap` 每个 field 以逗号分开
 
 **接口地址：** `/krm/audio`
 
@@ -1265,25 +1266,25 @@ vip 专属推荐
 
 ### 私人 FM(对应手机和 pc 端的猜你喜欢)
 
-说明 : 私人 FM
+说明：私人 FM
 
 **可选参数：**
 
-`hash`: 音乐 hash, 建议
+`hash`：音乐 hash，建议
 
-`songid`: 音乐 songid, 建议
+`songid`：音乐 songid，建议
 
-`playtime`: 已播放时间, 建议
+`playtime`：已播放时间，建议
 
-`mode`: 获取模式，默认为 normal, normal：发现，small： 小众，peak：30s
+`mode`：获取模式，默认为 normal，normal：发现，small：小众，peak：30s
 
-`action`: 默认为 play, garbage: 为不喜欢
+`action`：默认为 play，garbage：为不喜欢
 
-`song_pool_id`： 手机版的 AI，0：Alpha 根据口味推荐相似歌曲, 1：Beta 根据风格推荐相似歌曲, 2：Gamma
+`song_pool_id`：手机版的 AI，0：Alpha 根据口味推荐相似歌曲，1：Beta 根据风格推荐相似歌曲，2：Gamma
 
-`is_overplay`: 是否已播放完成
+`is_overplay`：是否已播放完成
 
-`remain_songcnt`: 剩余未播放歌曲数, 默认为 0，大于 4 不返回推荐歌曲，建议
+`remain_songcnt`：剩余未播放歌曲数，默认为 0，大于 4 不返回推荐歌曲，建议
 
 **接口地址：** `/personal/fm`
 
@@ -1291,7 +1292,7 @@ vip 专属推荐
 
 ### banner
 
-说明 : 调用此接口 , 可获取 banner( 轮播图 ) 数据
+说明：调用此接口，可获取 banner（轮播图）数据
 
 **接口地址：** `/pc/diantai`
 
@@ -1299,7 +1300,7 @@ vip 专属推荐
 
 ### 乐库 banner
 
-说明 : 调用此接口 , 可获取 乐库 banner( 轮播图 ) 数据
+说明：调用此接口，可获取 乐库 banner（轮播图）数据
 
 **接口地址：** `/yueku/banner`
 
@@ -1307,7 +1308,7 @@ vip 专属推荐
 
 ### 乐库电台
 
-说明 : 调用此接口 , 可获取乐库电台数据
+说明：调用此接口，可获取乐库电台数据
 
 **接口地址：** `/yueku/fm`
 
@@ -1315,7 +1316,7 @@ vip 专属推荐
 
 ### 乐库
 
-说明 : 调用此接口 , 可获取手机端乐库数据
+说明：调用此接口，可获取手机端乐库数据
 
 **接口地址：** `/yueku`
 
@@ -1323,7 +1324,7 @@ vip 专属推荐
 
 ### 电台
 
-说明 : 调用此接口 , 可获取所有电台数据
+说明：调用此接口，可获取所有电台数据
 
 **接口地址：** `/fm/class`
 
@@ -1331,7 +1332,7 @@ vip 专属推荐
 
 ### 电台 - 推荐
 
-说明 : 调用此接口 , 可获取推荐电台
+说明：调用此接口，可获取推荐电台
 
 **接口地址：** `/fm/recommend`
 
@@ -1339,11 +1340,11 @@ vip 专属推荐
 
 ### 电台 - 图片
 
-说明 : 调用此接口 , 可获取对应电台的图片
+说明：调用此接口，可获取对应电台的图片
 
 **必选参数：**
 
-`fmid`: fmid，可以传多个，以逗号分割
+`fmid`：fmid，可以传多个，以逗号分割
 
 **接口地址：** `/fm/image`
 
@@ -1351,19 +1352,19 @@ vip 专属推荐
 
 ### 电台 - 音乐列表
 
-说明 : 调用此接口 , 可获取对应电台的音乐列表
+说明：调用此接口，可获取对应电台的音乐列表
 
 **必选参数：**
 
-`fmid`: fmid，可以传多个，以逗号分割
+`fmid`：fmid，可以传多个，以逗号分割
 
 **可选参数：**
 
-`fmtype`: fmtype, 可以传多个，以逗号分割
+`fmtype`：fmtype，可以传多个，以逗号分割
 
-`fmoffset`: 歌曲偏移，可以传多个，以逗号分割
+`fmoffset`：歌曲偏移，可以传多个，以逗号分割
 
-`fmsize`: 歌曲列表大小，可以传多个，以逗号分割
+`fmsize`：歌曲列表大小，可以传多个，以逗号分割
 
 **接口地址：** `/fm/songs`
 
@@ -1371,7 +1372,7 @@ vip 专属推荐
 
 ### 编辑精选
 
-说明 : 调用此接口 , 可获取编辑精选数据
+说明：调用此接口，可获取编辑精选数据
 
 **接口地址：** `/top/ip`
 
@@ -1379,19 +1380,19 @@ vip 专属推荐
 
 ### 编辑精选数据
 
-说明 : 调用此接口 , 可获取编辑对应数据
+说明：调用此接口，可获取编辑对应数据
 
 **必选参数：**
 
-`id`: ip id
+`id`：ip id
 
 **可选参数：**
 
-`type`: 数据类型，audios: 音乐, albums: 专辑, videos: 视频, author_list: 歌手
+`type`：数据类型，audios：音乐，albums：专辑，videos：视频，author_list：歌手
 
-`page`： 页码
+`page`：页码
 
-`pagesize`: 每页页数, 默认为 30
+`pagesize`：每页页数，默认为 30
 
 **接口地址：** `/ip`
 
@@ -1403,13 +1404,13 @@ vip 专属推荐
 
 **必选参数：**
 
-`id`: ip id
+`id`：ip id
 
 **可选参数：**
 
-`page`： 页码
+`page`：页码
 
-`pagesize`: 每页页数, 默认为 30
+`pagesize`：每页页数，默认为 30
 
 **接口地址：** `/ip/playlist`
 
@@ -1429,49 +1430,49 @@ vip 专属推荐
 
 **必选参数：**
 
-`id`: ip id
+`id`：ip id
 
 **接口地址：** `/ip/zone/home`
 
 **调用例子：** `/ip/zone/home?id=329`
 
-### 领取 VIP（需要登陆，该接口为测试接口,仅限概念版使用）
+### 领取 VIP（需要登陆，该接口为测试接口，仅限概念版使用）
 
-说明 : 调用此接口 , 每天可领取 1 天 VIP 时长，需要领取 8 次，每次增加 3 小时，该接口来自 KG 概念版，非会员用户需要自行测试是否可用(尽量别频繁调用)
+说明：调用此接口，每天可领取 1 天 VIP 时长，需要领取 8 次，每次增加 3 小时，该接口来自 KG 概念版，非会员用户需要自行测试是否可用（尽量别频繁调用）
 
 **接口地址：** `/youth/vip`
 
 **调用例子：** `/youth/vip`
 
 
-### 领取一天 VIP（需要登陆，该接口为测试接口,仅限概念版使用）
+### 领取一天 VIP（需要登陆，该接口为测试接口，仅限概念版使用）
 
-说明 : 调用此接口 , 每天可领取 1 天 VIP 时长，该接口来自 KG 概念版，非会员用户需要自行测试是否可用(尽量别频繁调用)
+说明：调用此接口，每天可领取 1 天 VIP 时长，该接口来自 KG 概念版，非会员用户需要自行测试是否可用（尽量别频繁调用）
 
 **接口地址：** `/youth/day/vip`
 
 **调用例子：** `/youth/day/vip`
 
-### 升级概念版 VIP（需要登录，需要先领取一天 VIP，该接口为测试接口,仅限概念版使用）
+### 升级概念版 VIP（需要登录，需要先领取一天 VIP，该接口为测试接口，仅限概念版使用）
 
-说明 : 调用此接口 , 可以升级成畅听 VIP，该接口需要先领取一天 VIP（`/youth/day/vip`），该接口来自 KG 概念版，非会员用户需要自行测试是否可用(尽量别频繁
-调用)
+说明：调用此接口，可以升级成畅听 VIP，该接口需要先领取一天 VIP（`/youth/day/vip`），该接口来自 KG 概念版，非会员用户需要自行测试是否可用（尽量别频繁
+调用）
 
 **接口地址：** `/youth/day/vip/upgrade`
 
 **调用例子：** `/youth/day/vip/upgrade`
 
-### 获取当月已领取 VIP 天数（需要登陆，该接口为测试接口,仅限概念版使用）
+### 获取当月已领取 VIP 天数（需要登陆，该接口为测试接口，仅限概念版使用）
 
-说明 : 调用此接口 ,获取当月已领取 VIP 天数
+说明：调用此接口，获取当月已领取 VIP 天数
 
 **接口地址：** `/youth/month/vip/record`
 
 **调用例子：** `/youth/month/vip/record`
 
-### 获取已领取 VIP 状态（需要登陆，该接口为测试接口,仅限概念版使用）
+### 获取已领取 VIP 状态（需要登陆，该接口为测试接口，仅限概念版使用）
 
-说明 : 调用此接口 ,获取已领取 VIP 状态
+说明：调用此接口，获取已领取 VIP 状态
 
 **接口地址：** `/youth/union/vip`
 
@@ -1479,7 +1480,7 @@ vip 专属推荐
 
 ### 获取歌手列表
 
-说明 : 调用此接口，可以获取歌手列表.
+说明：调用此接口，可以获取歌手列表。
 
 **可选参数：**
 
@@ -1487,7 +1488,7 @@ vip 专属推荐
 
 `type`：类型，0：全部，1：华语，2：欧美，3：日韩，4：其他，5：日本，6：韩国
 
-`musician`：音乐人，3：为音乐人,0：默认
+`musician`：音乐人，3：为音乐人，0：默认
 
 `hotsize`：返回热门数量，默认 30
 
@@ -1497,11 +1498,11 @@ vip 专属推荐
 
 ### 获取歌手详情
 
-说明 : 调用此接口 , 传入歌手 id, 可获得歌手信息
+说明：调用此接口，传入歌手 id，可获得歌手信息
 
 **必选参数：**
 
-`id`： 歌手 id
+`id`：歌手 id
 
 **接口地址：** `/artist/detail`
 
@@ -1509,19 +1510,19 @@ vip 专属推荐
 
 ### 获取歌手专辑
 
-说明 : 调用此接口 , 传入歌手 id, 可获得歌手专辑
+说明：调用此接口，传入歌手 id，可获得歌手专辑
 
 **必选参数：**
 
-`id`： 歌手 id
+`id`：歌手 id
 
 **可选参数：**
 
-`page`： 页码
+`page`：页码
 
-`pagesize`: 每页页数, 默认为 30
+`pagesize`：每页页数，默认为 30
 
-`sort`: 排序，hot : 热门, new: 最新
+`sort`：排序，hot：热门，new：最新
 
 **接口地址：** `/artist/albums`
 
@@ -1529,19 +1530,19 @@ vip 专属推荐
 
 ### 获取歌手单曲
 
-说明 : 调用此接口 , 传入歌手 id, 可获得歌手歌曲
+说明：调用此接口，传入歌手 id，可获得歌手歌曲
 
 **必选参数：**
 
-`id`： 歌手 id
+`id`：歌手 id
 
 **可选参数：**
 
-`page`： 页码
+`page`：页码
 
-`pagesize`: 每页页数, 默认为 30
+`pagesize`：每页页数，默认为 30
 
-`sort`: 排序，hot : 热门, new: 最新
+`sort`：排序，hot：热门，new：最新
 
 **接口地址：** `/artist/audios`
 
@@ -1549,19 +1550,19 @@ vip 专属推荐
 
 ### 获取歌手 MV
 
-说明 : 调用此接口 , 传入歌手 id, 可获得歌手 MV
+说明：调用此接口，传入歌手 id，可获得歌手 MV
 
 **必选参数：**
 
-`id`： 歌手 id
+`id`：歌手 id
 
 **可选参数：**
 
-`page`： 页码
+`page`：页码
 
-`pagesize`: 每页页数, 默认为 30
+`pagesize`：每页页数，默认为 30
 
-`tag`: official: 官方版本，live：现场版本，fan：饭制版本，artist: 歌手发布, all: 获取全部，默认为获取全部
+`tag`：official：官方版本，live：现场版本，fan：饭制版本，artist：歌手发布，all：获取全部，默认为获取全部
 
 **接口地址：** `/artist/videos`
 
@@ -1569,11 +1570,11 @@ vip 专属推荐
 
 ### 关注歌手
 
-说明：调用此接口, 传入歌手 id, 可以关注该歌手（需要登录）
+说明：调用此接口，传入歌手 id，可以关注该歌手（需要登录）
 
 **必选参数：**
 
-`id`: 歌手 id
+`id`：歌手 id
 
 **接口地址：** `/artist/follow`
 
@@ -1581,11 +1582,11 @@ vip 专属推荐
 
 ### 取消关注歌手
 
-说明：调用此接口, 传入歌手 id, 可以取消关注该歌手（需要登录）
+说明：调用此接口，传入歌手 id，可以取消关注该歌手（需要登录）
 
 **必选参数：**
 
-`id`: 歌手 id
+`id`：歌手 id
 
 **接口地址：** `/artist/unfollow`
 
@@ -1593,15 +1594,15 @@ vip 专属推荐
 
 ### 获取关注歌手新歌
 
-说明：调用此接口, 可以获取用户已关注的歌手新歌（需要登录）
+说明：调用此接口，可以获取用户已关注的歌手新歌（需要登录）
 
 **可选参数：**
 
-`last_album_id`: 最后专辑 id
+`last_album_id`：最后专辑 id
 
-`pagesize`: 每页页数, 默认为 30,
+`pagesize`：每页页数，默认为 30，
 
-`opt_sort`: 排序，1：时间，2：亲密度，默认为 1(时间)
+`opt_sort`：排序，1：时间，2：亲密度，默认为 1(时间)
 
 **接口地址：** `/artist/follow/newsongs`
 
@@ -1609,11 +1610,11 @@ vip 专属推荐
 
 ### 获取视频 url
 
-说明 : 传入的视频的 hash, 可以获取对应的视频的 url
+说明：传入的视频的 hash，可以获取对应的视频的 url
 
 **必选参数：**
 
-`hash`: 视频 hash
+`hash`：视频 hash
 
 **接口地址：** `/video/url`
 
@@ -1621,15 +1622,15 @@ vip 专属推荐
 
 ### 获取歌曲 MV
 
-说明 : 传入 album_audio_id/MixSongID 获取歌曲 相对应的 mv
+说明：传入 album_audio_id/MixSongID 获取歌曲 相对应的 mv
 
 **必选参数：**
 
-album_audio_id: 专辑音乐 id (album_audio_id/MixSongID 均可以), 可以传多个，每个以逗号分开,
+album_audio_id：专辑音乐 id (album_audio_id/MixSongID 均可以)，可以传多个，每个以逗号分开，
 
 **可选参数：**
 
-fields: 支持多个，每个以逗号分隔，支持的值有：mkv,tags,h264,h265,authors
+fields：支持多个，每个以逗号分隔，支持的值有：mkv,tags,h264,h265,authors
 
 **接口地址：** `/kmr/audio/mv`
 
@@ -1637,11 +1638,11 @@ fields: 支持多个，每个以逗号分隔，支持的值有：mkv,tags,h264,h
 
 ### 获取视频相关信息
 
-说明 : 传入的视频的 hash, 可以获取对应的视频的相关信息
+说明：传入的视频的 hash，可以获取对应的视频的相关信息
 
 **必选参数：**
 
-`hash`: 视频 hash，可以传多个，以逗号隔开
+`hash`：视频 hash，可以传多个，以逗号隔开
 
 **接口地址：** `/video/privilege`
 
@@ -1653,7 +1654,7 @@ fields: 支持多个，每个以逗号分隔，支持的值有：mkv,tags,h264,h
 
 **必选参数：**
 
-`id`: 视频 id/video id
+`id`：视频 id/video id
 
 **接口地址：** `/video/detail`
 
@@ -1681,7 +1682,7 @@ fields: 支持多个，每个以逗号分隔，支持的值有：mkv,tags,h264,h
 
 **必选参数：**
 
-`id`: 场景音乐 scene_id
+`id`：场景音乐 scene_id
 
 **接口地址：** `/scene/module`
 
@@ -1693,15 +1694,15 @@ fields: 支持多个，每个以逗号分隔，支持的值有：mkv,tags,h264,h
 
 **必选参数**
 
-`id`: 场景音乐 scene_id
+`id`：场景音乐 scene_id
 
 **可选参数：**
 
-`page`： 页码
+`page`：页码
 
-`pagesize`: 每页页数, 默认为 30
+`pagesize`：每页页数，默认为 30
 
-`sort`: 排序，rec: 推荐，hot: 热门，new: 最新, 默认为推荐
+`sort`：排序，rec：推荐，hot：热门，new：最新，默认为推荐
 
 **接口地址：** `/scene/list/v2`
 
@@ -1713,9 +1714,9 @@ fields: 支持多个，每个以逗号分隔，支持的值有：mkv,tags,h264,h
 
 **必选参数**
 
-`id`: 场景音乐 scene_id
+`id`：场景音乐 scene_id
 
-`module_id`: 场景音乐 module_id
+`module_id`：场景音乐 module_id
 
 **可选参数：**
 
@@ -1729,13 +1730,13 @@ fields: 支持多个，每个以逗号分隔，支持的值有：mkv,tags,h264,h
 
 **必选参数**
 
-`tag_id`: 场景音乐 tag_id
+`tag_id`：场景音乐 tag_id
 
 **可选参数：**
 
-`page`： 页码
+`page`：页码
 
-`pagesize`: 每页页数, 默认为 30
+`pagesize`：每页页数，默认为 30
 
 **接口地址：** `/scene/collection/list`
 
@@ -1747,13 +1748,13 @@ fields: 支持多个，每个以逗号分隔，支持的值有：mkv,tags,h264,h
 
 **必选参数**
 
-`tag_id`: 场景音乐视频 tag_id
+`tag_id`：场景音乐视频 tag_id
 
 **可选参数：**
 
-`page`： 页码
+`page`：页码
 
-`pagesize`: 每页页数, 默认为 30
+`pagesize`：每页页数，默认为 30
 
 **接口地址：** `/scene/video/list`
 
@@ -1765,17 +1766,17 @@ fields: 支持多个，每个以逗号分隔，支持的值有：mkv,tags,h264,h
 
 **必选参数**
 
-`id`: 场景音乐 scene_id
+`id`：场景音乐 scene_id
 
-`module_id`: 场景音乐 module_id
+`module_id`：场景音乐 module_id
 
-`tag`: 场景音乐 tag_id
+`tag`：场景音乐 tag_id
 
 **可选参数：**
 
-`page`： 页码
+`page`：页码
 
-`pagesize`: 每页页数, 默认为 30
+`pagesize`：每页页数，默认为 30
 
 **接口地址：** `/scene/audio/list`
 
@@ -1787,7 +1788,7 @@ fields: 支持多个，每个以逗号分隔，支持的值有：mkv,tags,h264,h
 
 **可选参数：**
 
-`platform`：设备类型，默认为 ios,支持 android 和 ios
+`platform`：设备类型，默认为 ios，支持 android 和 ios
 
 **接口地址：** `/everyday/recommend`
 
@@ -1799,13 +1800,13 @@ fields: 支持多个，每个以逗号分隔，支持的值有：mkv,tags,h264,h
 
 **可选参数：**
 
-`mode`：当 mode 为 list 时，则返回历史推荐列表，当 mode 为 song 时则返回当前歌曲列表，支持参数为：list 和 song,
+`mode`：当 mode 为 list 时，则返回历史推荐列表，当 mode 为 song 时则返回当前歌曲列表，支持参数为：list 和 song，
 
-`history_name`: 当 mode 为 song 该参数为必选参数。
+`history_name`：当 mode 为 song 该参数为必选参数。
 
-`date`: 当 mode 为 song 该参数为必选参数。
+`date`：当 mode 为 song 该参数为必选参数。
 
-`platform`：设备类型，默认为 ios,支持 android 和 ios
+`platform`：设备类型，默认为 ios，支持 android 和 ios
 
 **接口地址：** `/everyday/history`
 
@@ -1817,7 +1818,7 @@ fields: 支持多个，每个以逗号分隔，支持的值有：mkv,tags,h264,h
 
 **可选参数：**
 
-`platform`：设备类型，默认为 ios,支持 android 和 ios
+`platform`：设备类型，默认为 ios，支持 android 和 ios
 
 `tagids`：支持多个，每个以逗号分隔，该接口下可获取 tag 信息
 
@@ -1893,9 +1894,9 @@ fields: 支持多个，每个以逗号分隔，支持的值有：mkv,tags,h264,h
 
 `rank_cid`：若需要返回往期歌曲列表，则该参数为必填，否则默认返回最新一期，[`/rank/vol`](#排行榜往期列表) 返回值中，`volid` 则为该参数
 
-`page`： 页码
+`page`：页码
 
-`pagesize`: 每页页数, 默认为 30
+`pagesize`：每页页数，默认为 30
 
 **接口地址：** `/rank/audio`
 
@@ -1903,7 +1904,7 @@ fields: 支持多个，每个以逗号分隔，支持的值有：mkv,tags,h264,h
 
 ### 歌曲收藏数
 
-说明 : 调用此接口 , 传入音乐 mixsongids 参数 , 可获得该音乐的收藏数( 不需要登录 )
+说明：调用此接口，传入音乐 mixsongids 参数，可获得该音乐的收藏数（不需要登录）
 
 **必选参数：**
 
@@ -1915,7 +1916,7 @@ fields: 支持多个，每个以逗号分隔，支持的值有：mkv,tags,h264,h
 
 ### 歌曲评论数
 
-说明 : 调用此接口 , 传入音乐 hash/special_id 参数 , 可获得该音乐的评论数( 不需要登录 )
+说明：调用此接口，传入音乐 hash/special_id 参数，可获得该音乐的评论数（不需要登录）
 
 **必选参数：**
 
@@ -1929,7 +1930,7 @@ fields: 支持多个，每个以逗号分隔，支持的值有：mkv,tags,h264,h
 
 ### 歌曲评论
 
-说明 : 调用此接口 , 传入音乐 mixsongid 参数 , 可获得该音乐的所有评论 ( 不需要登录 )
+说明：调用此接口，传入音乐 mixsongid 参数，可获得该音乐的所有评论（不需要登录）
 
 **必选参数：**
 
@@ -1937,11 +1938,11 @@ fields: 支持多个，每个以逗号分隔，支持的值有：mkv,tags,h264,h
 
 **可选参数：**
 
-`page`： 页码
+`page`：页码
 
-`pagesize`: 每页页数, 默认为 30
+`pagesize`：每页页数，默认为 30
 
-`show_classify`： 是否返回分类列表，0 为不返回，1 为返回
+`show_classify`：是否返回分类列表，0 为不返回，1 为返回
 
 `show_hotword_list`：是否返回热词，0 为不返回，1 为返回
 
@@ -1951,7 +1952,7 @@ fields: 支持多个，每个以逗号分隔，支持的值有：mkv,tags,h264,h
 
 ### 歌曲评论-根据分类返回
 
-说明 : 调用此接口 , 传入音乐 mixsongid 和 type_id 参数 , 可获得该音乐的分类评论 ( 不需要登录 )
+说明：调用此接口，传入音乐 mixsongid 和 type_id 参数，可获得该音乐的分类评论（不需要登录）
 
 **必选参数：**
 
@@ -1961,9 +1962,9 @@ fields: 支持多个，每个以逗号分隔，支持的值有：mkv,tags,h264,h
 
 **可选参数：**
 
-`page`： 页码
+`page`：页码
 
-`pagesize`: 每页页数, 默认为 30
+`pagesize`：每页页数，默认为 30
 
 `sort`：排序，1 为正序，2 为倒序
 
@@ -1973,7 +1974,7 @@ fields: 支持多个，每个以逗号分隔，支持的值有：mkv,tags,h264,h
 
 ### 歌曲评论-根据热词返回
 
-说明 : 调用此接口 , 传入音乐 mixsongid 和 hot_word 参数 , 可获得该音乐的热词评论 ( 不需要登录 )
+说明：调用此接口，传入音乐 mixsongid 和 hot_word 参数，可获得该音乐的热词评论（不需要登录）
 
 **必选参数：**
 
@@ -1983,9 +1984,9 @@ fields: 支持多个，每个以逗号分隔，支持的值有：mkv,tags,h264,h
 
 **可选参数：**
 
-`page`： 页码
+`page`：页码
 
-`pagesize`: 每页页数, 默认为 30
+`pagesize`：每页页数，默认为 30
 
 **接口地址：** `/comment/music/hotword`
 
@@ -1993,7 +1994,7 @@ fields: 支持多个，每个以逗号分隔，支持的值有：mkv,tags,h264,h
 
 ### 楼层评论
 
-说明 : 调用此接口 , 传入资源 special_id 和资源类型 tid 和资源 mixsongid 参数, 可获得该资源的歌曲楼层评论
+说明：调用此接口，传入资源 special_id 和资源类型 tid 和资源 mixsongid 参数，可获得该资源的歌曲楼层评论
 
 **必选参数：**
 
@@ -2005,9 +2006,9 @@ fields: 支持多个，每个以逗号分隔，支持的值有：mkv,tags,h264,h
 
 **可选参数：**
 
-`page`： 页码
+`page`：页码
 
-`pagesize`: 每页页数, 默认为 30
+`pagesize`：每页页数，默认为 30
 
 **接口地址：** `/comment/floor`
 
@@ -2015,7 +2016,7 @@ fields: 支持多个，每个以逗号分隔，支持的值有：mkv,tags,h264,h
 
 ### 歌单评论
 
-说明 : 调用此接口 , 传入歌单 id 参数 , 可获得该歌单的所有评论 ( 不需要登录 )
+说明：调用此接口，传入歌单 id 参数，可获得该歌单的所有评论（不需要登录）
 
 **必选参数：**
 
@@ -2023,11 +2024,11 @@ fields: 支持多个，每个以逗号分隔，支持的值有：mkv,tags,h264,h
 
 **可选参数：**
 
-`page`： 页码
+`page`：页码
 
-`pagesize`: 每页页数, 默认为 30
+`pagesize`：每页页数，默认为 30
 
-`show_classify`： 是否返回分类列表，0 为不返回，1 为返回
+`show_classify`：是否返回分类列表，0 为不返回，1 为返回
 
 `show_hotword_list`：是否返回热词，0 为不返回，1 为返回
 
@@ -2037,17 +2038,17 @@ fields: 支持多个，每个以逗号分隔，支持的值有：mkv,tags,h264,h
 
 ### 专辑评论
 
-说明 : 调用此接口 , 传入 专辑 id 参数 , 可获得该专辑的所有评论 ( 不需要登录 )
+说明：调用此接口，传入 专辑 id 参数，可获得该专辑的所有评论（不需要登录）
 
 `id`：专辑 id
 
 **可选参数：**
 
-`page`： 页码
+`page`：页码
 
-`pagesize`: 每页页数, 默认为 30
+`pagesize`：每页页数，默认为 30
 
-`show_classify`： 是否返回分类列表，0 为不返回，1 为返回
+`show_classify`：是否返回分类列表，0 为不返回，1 为返回
 
 `show_hotword_list`：是否返回热词，0 为不返回，1 为返回
 
@@ -2057,7 +2058,7 @@ fields: 支持多个，每个以逗号分隔，支持的值有：mkv,tags,h264,h
 
 ### 歌曲曲谱
 
-说明 : 调用此接口，传入歌曲 album_audio_id 可获得该歌曲的曲谱，注意：ai 曲谱为 xml 文件，需要自己解析，别问我，我也看不懂
+说明：调用此接口，传入歌曲 album_audio_id 可获得该歌曲的曲谱，注意：ai 曲谱为 xml 文件，需要自己解析，别问我，我也看不懂
 
 **必选参数：**
 
@@ -2067,9 +2068,9 @@ fields: 支持多个，每个以逗号分隔，支持的值有：mkv,tags,h264,h
 
 `opern_type`：曲谱类型，0：全部，1：钢琴，2：吉他，3：鼓，98：简谱，99：其他
 
-`page`： 页码
+`page`：页码
 
-`pagesize`: 每页页数, 默认为 30
+`pagesize`：每页页数，默认为 30
 
 **接口地址：** `/sheet/list`
 
@@ -2077,7 +2078,7 @@ fields: 支持多个，每个以逗号分隔，支持的值有：mkv,tags,h264,h
 
 ### 曲谱详情
 
-说明 : 调用此接口，传入曲谱 id 和 曲谱 source 可获得该曲谱详情，**注意：ai 曲谱为 xml 文件，需要自己解析，别问我，我也看不懂**
+说明：调用此接口，传入曲谱 id 和 曲谱 source 可获得该曲谱详情，**注意：ai 曲谱为 xml 文件，需要自己解析，别问我，我也看不懂**
 
 **必选参数：**
 
@@ -2091,7 +2092,7 @@ fields: 支持多个，每个以逗号分隔，支持的值有：mkv,tags,h264,h
 
 ### 推荐曲谱
 
-说明 : 调用此接口，可以获取推荐曲谱
+说明：调用此接口，可以获取推荐曲谱
 
 **可选参数：**
 
@@ -2103,7 +2104,7 @@ fields: 支持多个，每个以逗号分隔，支持的值有：mkv,tags,h264,h
 
 ### 曲谱合集
 
-说明 : 调用此接口，可以获取曲谱合集
+说明：调用此接口，可以获取曲谱合集
 
 **可选参数：**
 
@@ -2115,13 +2116,13 @@ fields: 支持多个，每个以逗号分隔，支持的值有：mkv,tags,h264,h
 
 ### 曲谱合集详情
 
-说明 : 调用此接口，可以获取曲谱合集详情
+说明：调用此接口，可以获取曲谱合集详情
 
 **可选参数：**
 
 `collection_id`：合集 id
 
-`page`： 页码
+`page`：页码
 
 **接口地址：** `/sheet/collection`
 
@@ -2133,13 +2134,13 @@ fields: 支持多个，每个以逗号分隔，支持的值有：mkv,tags,h264,h
 
 **必选参数：**
 
-`mxid`： 专辑音乐 id (album_audio_id/MixSongID 均可以)
+`mxid`：专辑音乐 id (album_audio_id/MixSongID 均可以)
 
 **可选参数：**
 
-`ot`：当前时间戳, 秒级，不要传入毫秒级，否者会返回错误，或者从 [`获取服务器时间`](#获取服务器时间) 中获取
+`ot`：当前时间戳，秒级，不要传入毫秒级，否者会返回错误，或者从 [`获取服务器时间`](#获取服务器时间) 中获取
 
-`pc`: 当前播放次数，更新播放次数，当服务器的值大于传入值时，将维持服务最大值，否则更新
+`pc`：当前播放次数，更新播放次数，当服务器的值大于传入值时，将维持服务最大值，否则更新
 
 **接口地址：** `/playhistory/upload`
 
@@ -2167,7 +2168,7 @@ fields: 支持多个，每个以逗号分隔，支持的值有：mkv,tags,h264,h
 
 **必选参数：**
 
-`album_audio_id`： 专辑音乐 id (album_audio_id/MixSongID 均可以), 可以传多个，每个以逗号分开,
+`album_audio_id`：专辑音乐 id (album_audio_id/MixSongID 均可以)，可以传多个，每个以逗号分开，
 
 **接口地址：** `/ai/recommend`
 
@@ -2181,7 +2182,7 @@ fields: 支持多个，每个以逗号分隔，支持的值有：mkv,tags,h264,h
 
 `page`：页数
 
-`pagesize `: 每页页数, 默认为 30
+`pagesize`：每页页数，默认为 30
 
 **接口地址：** `/youth/channel/all`
 
@@ -2193,7 +2194,7 @@ fields: 支持多个，每个以逗号分隔，支持的值有：mkv,tags,h264,h
 
 **必选参数：**
 
-`global_collection_id`：频道 id (global_collection_id / channel_id 均可以), 可以传多个，每个以逗号分开,
+`global_collection_id`：频道 id (global_collection_id / channel_id 均可以)，可以传多个，每个以逗号分开，
 
 **接口地址：** `/youth/channel/detail`
 
@@ -2225,7 +2226,7 @@ fields: 支持多个，每个以逗号分隔，支持的值有：mkv,tags,h264,h
 
 ### 频道 - 订阅
 
-说明：登录后调用此接口， 传入 `global_collection_id / channel_id` 可订阅频道
+说明：登录后调用此接口，传入 `global_collection_id / channel_id` 可订阅频道
 
 **必选参数：**
 
@@ -2251,7 +2252,7 @@ fields: 支持多个，每个以逗号分隔，支持的值有：mkv,tags,h264,h
 
 `page`：页数
 
-`pagesize `: 每页页数, 默认为 30
+`pagesize`：每页页数，默认为 30
 
 **接口地址：** `/youth/channel/song`
 
@@ -2265,7 +2266,7 @@ fields: 支持多个，每个以逗号分隔，支持的值有：mkv,tags,h264,h
 
 `global_collection_id`：频道 id (global_collection_id / channel_id 均可以)
 
-`fileid`: 音乐故事 fileid
+`fileid`：音乐故事 fileid
 
 **接口地址：** `/youth/channel/song/detail`
 
@@ -2291,7 +2292,7 @@ fields: 支持多个，每个以逗号分隔，支持的值有：mkv,tags,h264,h
 
 `page`：页数
 
-`pagesize `: 每页页数, 默认为 30
+`pagesize`：每页页数，默认为 30
 
 **接口地址：** `/youth/user/song`
 
@@ -2303,7 +2304,7 @@ fields: 支持多个，每个以逗号分隔，支持的值有：mkv,tags,h264,h
 
 `page`：页数
 
-`pagesize `: 每页页数, 默认为 30
+`pagesize`：每页页数，默认为 30
 
 **接口地址：** `/longaudio/daily/recommend`
 
@@ -2331,7 +2332,7 @@ fields: 支持多个，每个以逗号分隔，支持的值有：mkv,tags,h264,h
 
 **必选参数：**
 
-`album_id`: 专辑 id 可以传多个，每个以逗号分开,
+`album_id`：专辑 id 可以传多个，每个以逗号分开，
 
 **接口地址：** `/longaudio/album/detail`
 
@@ -2341,7 +2342,7 @@ fields: 支持多个，每个以逗号分隔，支持的值有：mkv,tags,h264,h
 
 **必选参数：**
 
-`album_id`: 专辑 id 可以传多个
+`album_id`：专辑 id 可以传多个
 
 **接口地址：** `/longaudio/album/audios`
 
@@ -2353,7 +2354,7 @@ fields: 支持多个，每个以逗号分隔，支持的值有：mkv,tags,h264,h
 
 **必选参数：**
 
-`album_audio_id`： 专辑音乐 id (album_audio_id/MixSongID 均可以),
+`album_audio_id`：专辑音乐 id (album_audio_id/MixSongID 均可以)，
 
 **接口地址：** `/song/ranking`
 
@@ -2365,13 +2366,13 @@ fields: 支持多个，每个以逗号分隔，支持的值有：mkv,tags,h264,h
 
 **必选参数：**
 
-`album_audio_id`： 专辑音乐 id (album_audio_id/MixSongID 均可以),
+`album_audio_id`：专辑音乐 id (album_audio_id/MixSongID 均可以)，
 
 **可选参数：**
 
 `page`：页数
 
-`pagesize `: 每页页数, 默认为 30
+`pagesize`：每页页数，默认为 30
 
 **接口地址：** `/song/ranking/filter`
 
